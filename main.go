@@ -103,7 +103,6 @@ var generateCmd = &cobra.Command{
 	Long:  `Generate an invoice`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		// Import data and initialize PDF (kept unchanged)
 		if importPath != "" {
 			err := importData(importPath, &file, cmd.Flags())
 			if err != nil {
@@ -127,15 +126,8 @@ var generateCmd = &cobra.Command{
 			return err
 		}
 
-		// Draw the logo
-		writeLogo(&pdf, file.Logo, file.From)
-
-		// Move to the desired position for the title
-		pdf.SetX(360)
-
-		// Draw the title at the new position
 		writeTitle(&pdf, file.Title, file.Id, file.Date)
-
+		writeLogo(&pdf, file.Logo, file.From)
 		writeBillTo(&pdf, file.To)
 		writeHeaderRow(&pdf)
 		subtotal := 0.0

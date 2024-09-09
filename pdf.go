@@ -25,65 +25,52 @@ const (
 
 func writeLogo(pdf *gopdf.GoPdf, logo string, from string) {
 	if logo != "" {
-		// Get image dimensions and scale
 		width, height := getImageDimension(logo)
 		scaledWidth := 100.0
 		scaledHeight := float64(height) * scaledWidth / float64(width)
-
-		// Place the logo image on the left
 		_ = pdf.Image(logo, pdf.GetX(), pdf.GetY(), &gopdf.Rect{W: scaledWidth, H: scaledHeight})
-
-		// Keep track of Y position to align with title
-		currentY := pdf.GetY()
-		pdf.SetY(currentY + scaledHeight + 24)
+		pdf.Br(scaledHeight + 24)
 	}
-
-	// Text setup for the 'from' address
 	pdf.SetTextColor(55, 55, 55)
+
 	formattedFrom := strings.ReplaceAll(from, `\n`, "\n")
 	fromLines := strings.Split(formattedFrom, "\n")
 
-	// Write each line of the 'from' address, starting after the logo
 	for i := 0; i < len(fromLines); i++ {
 		if i == 0 {
 			_ = pdf.SetFont("Inter", "", 12)
+			_ = pdf.Cell(nil, fromLines[i])
+			pdf.Br(18)
 		} else {
 			_ = pdf.SetFont("Inter", "", 10)
+			_ = pdf.Cell(nil, fromLines[i])
+			pdf.Br(15)
 		}
-		_ = pdf.Cell(nil, fromLines[i])
-		pdf.Br(15)
 	}
-
-	// Optionally, add a divider line under the 'from' section
+	pdf.Br(21)
 	pdf.SetStrokeColor(225, 225, 225)
 	pdf.Line(pdf.GetX(), pdf.GetY(), 260, pdf.GetY())
+	pdf.Br(36)
 }
 
 func writeTitle(pdf *gopdf.GoPdf, title, id, date string) {
-	// Set position for title, ensuring it's side by side with the logo
-	pdf.SetX(360) // Move the X position to the right
-	currentY := pdf.GetY()
-	pdf.SetY(currentY) // Align the Y position with the logo's Y position
-
-	// Title text
 	_ = pdf.SetFont("Inter-Bold", "", 24)
 	pdf.SetTextColor(0, 0, 0)
 	_ = pdf.Cell(nil, title)
-
-	// Spacer between title and other details
-	pdf.Br(12)
-
-	// Invoice ID and date
+	pdf.Br(36)
 	_ = pdf.SetFont("Inter", "", 12)
 	pdf.SetTextColor(100, 100, 100)
 	_ = pdf.Cell(nil, "# ")
 	_ = pdf.Cell(nil, id)
-	pdf.Br(12)
-
-	// Date section
-	_ = pdf.Cell(nil, "Date: ")
-	_ = pdf.Cell(nil, date)
+	pdf.SetTextColor(150, 150, 150)
+    pdf.Br(36)
+    _ = pdf.SetFont("Inter", "", 12)
+    pdf.SetTextColor(100, 100, 100)
+    _ = pdf.Cell(nil, "Date: ")
+    _ = pdf.Cell(nil, date)
+    pdf.Br(48)
 }
+
 
 func writeDueDate(pdf *gopdf.GoPdf, due string) {
 	_ = pdf.SetFont("Inter", "", 9)
