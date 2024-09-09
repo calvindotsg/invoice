@@ -54,25 +54,20 @@ func writeLogo(pdf *gopdf.GoPdf, logo string, from string) {
 }
 
 func writeTitle(pdf *gopdf.GoPdf, title, id, date string) {
-    // Set title font and color
-    _ = pdf.SetFont("Inter-Bold", "", 24)
-    pdf.SetTextColor(0, 0, 0)
-
-    // Format title and ID in the desired format: {Title}: #{id}
-    formattedTitle := fmt.Sprintf("%s: #%s", title, id)
-    _ = pdf.Cell(nil, formattedTitle)
-
-    // Add line break
+	_ = pdf.SetFont("Inter-Bold", "", 24)
+	pdf.SetTextColor(0, 0, 0)
+	_ = pdf.Cell(nil, title)
+	pdf.Br(36)
+	_ = pdf.SetFont("Inter", "", 12)
+	pdf.SetTextColor(100, 100, 100)
+	_ = pdf.Cell(nil, "# ")
+	_ = pdf.Cell(nil, id)
+	pdf.SetTextColor(150, 150, 150)
     pdf.Br(36)
-
-    // Set the font and color for the date
     _ = pdf.SetFont("Inter", "", 12)
     pdf.SetTextColor(100, 100, 100)
-
-    // Display date on a new line
+    _ = pdf.Cell(nil, "Date: ")
     _ = pdf.Cell(nil, date)
-
-    // Add a line break
     pdf.Br(48)
 }
 

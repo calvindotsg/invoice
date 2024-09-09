@@ -126,8 +126,16 @@ var generateCmd = &cobra.Command{
 			return err
 		}
 
+		// Set position for writeLogo (left aligned)
+		pdf.SetX(40) // Left margin position
 		writeLogo(&pdf, file.Logo, file.From)
+
+		// Set position for writeTitle (right aligned)
+		pageWidth, _ := gopdf.PageSizeA4.Width() // Get page width
+		titleWidth := 200.0                      // Assume title block width
+		pdf.SetX(pageWidth - titleWidth - 40)    // Align with right margin
 		writeTitle(&pdf, file.Title, file.Id, file.Date)
+
 		writeBillTo(&pdf, file.To)
 		writeHeaderRow(&pdf)
 		subtotal := 0.0
