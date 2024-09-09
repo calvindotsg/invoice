@@ -60,7 +60,7 @@ func writeTitle(pdf *gopdf.GoPdf, title, id, date string) {
 	pdf.Br(36)
 	_ = pdf.SetFont("Inter", "", 12)
 	pdf.SetTextColor(100, 100, 100)
-	_ = pdf.Cell(nil, "# ")
+	_ = pdf.Cell(nil, "Invoice number: # ")
 	_ = pdf.Cell(nil, id)
 	pdf.SetTextColor(150, 150, 150)
     pdf.Br(36)
