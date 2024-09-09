@@ -103,6 +103,7 @@ var generateCmd = &cobra.Command{
 	Long:  `Generate an invoice`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 
+		// Import data and initialize PDF (kept unchanged)
 		if importPath != "" {
 			err := importData(importPath, &file, cmd.Flags())
 			if err != nil {
@@ -126,14 +127,13 @@ var generateCmd = &cobra.Command{
 			return err
 		}
 
-		// Set position for writeLogo (left aligned)
-		pdf.SetX(40) // Left margin position
+		// Draw the logo
 		writeLogo(&pdf, file.Logo, file.From)
 
-		// Set position for writeTitle (right aligned)
-		pageWidth := gopdf.PageSizeA4.W // Access the 'W' field for the width
-		titleWidth := 200.0             // Assume title block width
-		pdf.SetX(pageWidth - titleWidth - 40) // Align with right margin
+		// Move to the desired position for the title
+		pdf.SetX(360)
+
+		// Draw the title at the new position
 		writeTitle(&pdf, file.Title, file.Id, file.Date)
 
 		writeBillTo(&pdf, file.To)
